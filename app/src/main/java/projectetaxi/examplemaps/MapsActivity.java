@@ -252,7 +252,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onMapLongClick(LatLng latLng) {
-        mMap.addMarker(new MarkerOptions().position(latLng).title(latLng.toString()));
+        if(mCurrLocationMarker!=null){
+            mCurrLocationMarker.remove();
+        }
+
+        mCurrLocationMarker=mMap.addMarker(new MarkerOptions()
+                            .position(LatLng)
+                            .draggable(true).visible(true));
+
+
+//        mMap.addMarker(new MarkerOptions().position(latLng).title(latLng.toString()));
     }
 
     @Override
