@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,12 +41,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     GoogleApiClient mGoogleApiClient;
     Location mLastLocation;
-    Marker mCurrLocationMarker;
+    Marker mCurrLocationMarker, marker;
     LocationRequest mLocationRequest;
     private GoogleMap mMap;
     TextView tvLocInfo;
 
-
+    final String TAG = this.getClass().getName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -224,6 +225,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public boolean onMarkerClick(final Marker marker) {
+
+//        if(mCurrLocationMarker!=null){
+//            mCurrLocationMarker.remove();
+//        }
+
         // Retrieve the data from the marker.
         Integer clickCount = (Integer) marker.getTag();
 
@@ -243,25 +249,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return false;
     }
 
-//    @Override
-//    public void onMapClick(LatLng latLng) {
-//        tvLocInfo.setText(latLng.toString());
-//        mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-//    }
 
 
     @Override
     public void onMapLongClick(LatLng latLng) {
-        if(mCurrLocationMarker!=null){
-            mCurrLocationMarker.remove();
+        if(marker!=null){
+            marker.remove();
+
+            Log.d(TAG, "" + latLng);
         }
 
-        mCurrLocationMarker=mMap.addMarker(new MarkerOptions()
-                            .position(LatLng)
-                            .draggable(true).visible(true));
 
 
-//        mMap.addMarker(new MarkerOptions().position(latLng).title(latLng.toString()));
+        marker= mMap.addMarker(new MarkerOptions().position(latLng).title(latLng.toString()));
     }
 
     @Override
